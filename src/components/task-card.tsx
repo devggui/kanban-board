@@ -4,15 +4,15 @@ import { Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DraggableProvided } from "react-beautiful-dnd"
 
-type TaskProps = {
+type TaskCardProps = {
   task: Task
   provided: DraggableProvided
 }
 
-export function Task({
+export function TaskCard({
   task,
   provided
-}: TaskProps) {
+}: TaskCardProps) {
   const { ...data } = task
   
   return (

@@ -7,7 +7,7 @@ export function Header() {
       <div className="flex px-6 h-16 items-center justify-between">
         <div className="flex items-center justify-center gap-3">
           <Kanban className="size-8 text-primary" />
-          <h1 className="text-primary text-2xl font-bold">React Kanban Board</h1>
+          <h1 className="text-primary text-2xl font-bold">Kanban Board</h1>
         </div>     
         <ModeToggle />      
       </div>

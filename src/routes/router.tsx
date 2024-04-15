@@ -1,5 +1,5 @@
 import Layout from "@/layouts/layout"
-import { Boards } from "@/pages/boards"
+import { Boards } from "@/pages/Boards"
 import { createBrowserRouter } from "react-router-dom"
 
 export const router = createBrowserRouter([

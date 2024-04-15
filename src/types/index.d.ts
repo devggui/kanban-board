@@ -1,14 +1,16 @@
 export type Task = {
   id: string
   title: string
-  description: string
-  priority: 'high' | 'medium' | 'low'
-  deadline: number
+  description?: string
+  priority: 'high' | 'medium' | 'low' | string
+  deadline: Date
 }
 
-export type Column = {
-  id: string
+export type Column = {  
   name: string
   items: Task[]
 }
 
+export type Columns = {
+  [key: string]: Column
+}

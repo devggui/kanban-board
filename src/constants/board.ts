@@ -1,9 +1,8 @@
 import { v4 as uuidv4 } from "uuid"
-import { Column } from "@/types"
+import { Columns } from "../types"
 
-export const Board: Column[] = [
-	{
-		id: uuidv4(),		
+export const Board: Columns = {
+	backlog: {
 		name: "Backlog",
 		items: [
 			{
@@ -11,60 +10,40 @@ export const Board: Column[] = [
 				title: "Admin Panel Front-end",
 				description: "Lorem ipsum dolor sit amet ..",
 				priority: "medium",
-				deadline: 50,					
+				deadline: 50,				
+				alt: "task image",				
 			},
 			{
 				id: uuidv4(),
 				title: "Admin Panel Back-end",
 				description: "Lorem ipsum dolor sit amet ..",
 				priority: "low",
-				deadline: 50,
+				deadline: 50,				
 			},
 		],
 	},
-	{
-		id: uuidv4(),
-		name: "Pending",
-		items: [
-			{
-				id: uuidv4(),
-				title: "Admin Panel Back-end",
-				description: "Lorem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "Lorem ipsum dolor sit amet ..",
-				priority: "low",
-				deadline: 50,										
-			},
-		],
-	},
-	{
-		id: uuidv4(),
-		name: "To Do",
+	todo: {
+		name: "A fazer",
 		items: [
 			{
 				id: uuidv4(),
 				title: "Admin Panel Front-end",
 				description: "Lorem ipsum dolor sit amet ..",
 				priority: "medium",
-				deadline: 50,										
+				deadline: 50,				
+				alt: "task image",				
 			},
 		],
 	},
-	{
-		id: uuidv4(),
-		name: "Doing",
+	doing: {
+		name: "Em progresso",
 		items: [
 			{
 				id: uuidv4(),
 				title: "Admin Panel Front-end",
 				description: "Lorem ipsum dolor sit amet ..",
 				priority: "low",
-				deadline: 50,		
+				deadline: 50,				
 			},
 			{
 				id: uuidv4(),
@@ -75,92 +54,8 @@ export const Board: Column[] = [
 			},
 		],
 	},
-	{
-		id: uuidv4(),
-		name: "Done",
-		items: [
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "LoLorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..Lorem ipsum dolor sit amet ..rem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-		],
+	done: {
+		name: "Concluído",
+		items: [],
 	},
-	{
-		id: uuidv4(),
-		name: "Done",
-		items: [
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "Lorem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-		],
-	},
-	{
-		id: uuidv4(),
-		name: "Done",
-		items: [
-			{
-				id: uuidv4(),
-				title: "Admin Panel Front-end",
-				description: "Lorem ipsum dolor sit amet ..",
-				priority: "high",
-				deadline: 50,												
-			},
-		],
-	},
-]
+}
