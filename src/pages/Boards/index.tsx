@@ -1,11 +1,12 @@
 import { useState } from "react"
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
+import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautiful-dnd"
 import type { Columns, Task } from "@/types"
 import { Plus } from "lucide-react"
 import { TaskCard } from "@/components/task-card"
 import { Button } from "@/components/ui/button"
 import { Board } from "@/constants/board"
 import { BoardForm } from "./form"
+import { useOnDragEnd } from "@/hooks/on-drag-end"
 
 export function Boards() {
   const [columns, setColumns] = useState<Columns>(Board)    
@@ -32,7 +33,7 @@ export function Boards() {
   
   return (
     <>
-      <DragDropContext onDragEnd={(result) => console.log(result)}>
+      <DragDropContext onDragEnd={(result: DropResult) => useOnDragEnd(result, columns, setColumns)}>
         <div className="flex items-start p-6 gap-6 flex-1 max-h-[calc(100vh-65px)] overflow-auto">        
           {Object.entries(columns).map(([columnId, column]) => (
             <div className="flex flex-col items-center gap-6" key={columnId}>
@@ -42,23 +43,25 @@ export function Boards() {
               >
                 {provided => (
                   <div
-                    className="flex flex-col w-72 gap-3 items-center"
                     ref={provided.innerRef}
                     {...provided.droppableProps}
+                    className="flex flex-col w-72 gap-3 items-center"
                   >
                     <div className="flex items-center justify-center h-10 rounded-md px-8 w-full shadow-sm font-medium text-lg bg-background">
                       {column.name}
                     </div>
 
-                    {column.items.map((task, index) => (
+                    {column.items.map((task: Task, index: number) => (
                       <Draggable
                         key={task.id}
                         draggableId={task.id}
                         index={index}
                       >
-                        {provided => <TaskCard provided={provided} task={task} />}
+                        {(provided) => <TaskCard provided={provided} task={task} />}
                       </Draggable>
                     ))}
+
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>

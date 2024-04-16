@@ -3,6 +3,8 @@ import { Separator } from "@/components/ui/separator"
 import { Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DraggableProvided } from "react-beautiful-dnd"
+import { format } from "date-fns-tz"
+import { ptBR } from "date-fns/locale/pt-BR"
 
 type TaskCardProps = {
   task: Task
@@ -29,10 +31,10 @@ export function TaskCard({
 
       <Separator />
 
-      <div className="flex w-full items-center justify-between">
+      <div className="flex flex-col w-full items-start gap-3">
         <span className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <Clock className="size-4" />
-          {data.deadline} mins
+          {format(data.deadline, "P", { timeZone: 'America/Sao_Paulo', locale: ptBR })}
         </span>
 
         <div 
