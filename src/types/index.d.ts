@@ -1,9 +1,9 @@
 export type Task = {
   id: string
   title: string
-  description?: string
+  description: string
   priority: 'high' | 'medium' | 'low' | string
-  deadline: Date
+  deadline?: string
 }
 
 export type Column = {  

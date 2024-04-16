@@ -4,14 +4,19 @@ import type { Columns, Task } from "@/types"
 import { Plus } from "lucide-react"
 import { TaskCard } from "@/components/task-card"
 import { Button } from "@/components/ui/button"
-import { Board } from "@/constants/board"
 import { BoardForm } from "./form"
 import { useOnDragEnd } from "@/hooks/on-drag-end"
+import { useDispatch } from "react-redux"
+import { addTask, selectBoard } from "@/reducers/boardReducer"
+import { useSelector } from "react-redux"
 
-export function Boards() {
-  const [columns, setColumns] = useState<Columns>(Board)    
+export function Boards() {    
+  const boards = useSelector(selectBoard) 
+  const dispatch = useDispatch()    
+  
+  const [columns, setColumns] = useState<Columns>(boards)    
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const [selectedColumn, setSelectedColumn] = useState<string>('')  
+  const [selectedColumn, setSelectedColumn] = useState<string>('')        
 
   const handleFormOpenChange = (value: boolean): void => {
     setIsFormOpen(value)
@@ -22,13 +27,20 @@ export function Boards() {
     setIsFormOpen(true)
   }      
 
-  const handleCreateTask = (taskData: Task) => {         
-    const newBoard = { ...columns }
-    newBoard[selectedColumn].items.push(taskData)        
+  const handleCreateTask = (taskData: Task) => {             
+    dispatch(addTask({
+      columnId: selectedColumn,
+      task: taskData
+    }))     
   }
 
-  const handleEditTask = (task: Task) => {
-    setIsFormOpen(true)
+  const handleEditTask = (taskData: Task) => {             
+    const payload = {
+      columnId: selectedColumn,
+      task: taskData
+    }
+
+    dispatch(addTask(payload))     
   }
   
   return (

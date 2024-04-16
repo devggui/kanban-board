@@ -3,8 +3,7 @@ import { Separator } from "@/components/ui/separator"
 import { Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DraggableProvided } from "react-beautiful-dnd"
-import { format } from "date-fns-tz"
-import { ptBR } from "date-fns/locale/pt-BR"
+import { calculateMinutesToDeadline } from "@/services/calculate-deadline"
 
 type TaskCardProps = {
   task: Task
@@ -33,8 +32,12 @@ export function TaskCard({
 
       <div className="flex flex-col w-full items-start gap-3">
         <span className="flex items-center gap-2 text-base font-medium text-muted-foreground">
-          <Clock className="size-4" />
-          {format(data.deadline, "P", { timeZone: 'America/Sao_Paulo', locale: ptBR })}
+          {data.deadline && (
+            <div className="flex items-center gap-1">
+              <Clock className="size-4" />
+              {calculateMinutesToDeadline(data.deadline)}
+            </div>
+          )}
         </span>
 
         <div 
