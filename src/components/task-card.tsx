@@ -18,7 +18,7 @@ export function TaskCard({
   
   return (
     <div 
-      className="w-full cursor-grab bg-background flex flex-col justify-between gap-3 items-start shadow-sm rounded-md px-3 py-4"
+      className="w-full cursor-grab bg-background flex flex-col justify-between gap-3 items-start shadow-sm rounded-md px-3 py-4 hover:bg-background/80"
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}

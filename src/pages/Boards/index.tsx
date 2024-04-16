@@ -28,10 +28,8 @@ export function Boards() {
   }      
 
   const handleCreateTask = (taskData: Task) => {             
-    dispatch(addTask({
-      columnId: selectedColumn,
-      task: taskData
-    }))     
+    dispatch(addTask({ columnId: selectedColumn, task: taskData }))         
+    updateList(taskData)    
   }
 
   const handleEditTask = (taskData: Task) => {             
@@ -41,6 +39,18 @@ export function Boards() {
     }
 
     dispatch(addTask(payload))     
+  }
+
+  const updateList = (taskData: Task) => {
+    const updatedColumns = {
+      ...columns,
+      [selectedColumn]: {
+        ...columns[selectedColumn],
+        items: [...columns[selectedColumn].items, taskData]
+      }
+    }
+
+    setColumns(updatedColumns)
   }
   
   return (

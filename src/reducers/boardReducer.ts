@@ -28,21 +28,38 @@ const initialState: Columns = {
   }
 }
 
+const saveStateToLocalStorage = (state: Columns) => {
+  localStorage.setItem("boardState", JSON.stringify(state))
+}
+
+const loadStateFromLocalStorage = (): Columns | null => {
+  const serializedState = localStorage.getItem("boardState")
+  if (serializedState === null) {
+    return null
+  }
+  return JSON.parse(serializedState)
+}
+
+const initialStateFromLocalStorage = loadStateFromLocalStorage() || initialState
+
 const boardSlice = createSlice({
   name: "board",
-  initialState,
+  initialState: initialStateFromLocalStorage,
   reducers: {
     addTask: (state, action: PayloadAction<AddTaskPayload>) => {
       const { columnId, task } = action.payload      
       state[columnId].items.push(task)            
+      saveStateToLocalStorage(state)
     }, 
     editTask: (state, action: PayloadAction<EditTaskPayload>) => {
-      const { columnId, taskIndex, updatedTask } = action.payload;
-      state[columnId].items[taskIndex] = updatedTask;
+      const { columnId, taskIndex, updatedTask } = action.payload
+      state[columnId].items[taskIndex] = updatedTask
+      saveStateToLocalStorage(state)
     },
     removeTask: (state, action) => {
       const { columnId, taskIndex } = action.payload
       state[columnId].items.splice(taskIndex, 1)
+      saveStateToLocalStorage(state)
     }   
   }
 })

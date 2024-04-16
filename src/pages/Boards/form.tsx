@@ -29,6 +29,8 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { addDays } from "date-fns"
+import moment from "moment"
+import { toast } from "sonner"
 
 const BoardFormSchema = z.object({
   id: z.string(),
@@ -61,10 +63,10 @@ export const BoardForm = ({
     reset,    
     formState: { errors, isSubmitting },
   } = useForm<BoardFormData>({ resolver: zodResolver(BoardFormSchema) })            
-  const [date, setDate] = useState<Date>()  
+  const [date, setDate] = useState<Date>()    
 
   useEffect(() => {
-    if (!date) return    
+    if (!date) return         
     setValue('deadline', date.toISOString())
   }, [date])
 
@@ -169,14 +171,14 @@ export const BoardForm = ({
                 <PopoverContent
                   align="start"
                   className="flex w-auto flex-col space-y-2 p-2"
-                >
+                >                  
                   <Select
                     onValueChange={(value) =>
                       setDate(addDays(new Date(), parseInt(value)))
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecione..." />
+                      <SelectValue placeholder="Selecione um período..." />
                     </SelectTrigger>
                     <SelectContent position="popper">
                       <SelectItem value="0">Hoje</SelectItem>
@@ -186,7 +188,12 @@ export const BoardForm = ({
                     </SelectContent>
                   </Select>
                   <div className="rounded-md border">
-                    <Calendar mode="single" selected={date} onSelect={setDate} locale={ptBR} />
+                    <Calendar 
+                      mode="single" 
+                      selected={date} 
+                      onSelect={setDate} 
+                      locale={ptBR}                       
+                    />
                   </div>
                 </PopoverContent>
               </Popover>             
