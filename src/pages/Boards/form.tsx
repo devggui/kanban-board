@@ -3,15 +3,10 @@ import type { Task } from "@/types"
 import { z } from "zod"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns-tz"
-import { ptBR } from "date-fns/locale/pt-BR"
-import { cn } from "@/lib/utils"
-import { CalendarIcon, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { v4 as uuidv4 } from "uuid"
-import { addDays } from "date-fns"
 import { addTask, editTask } from "@/reducers/boardReducer"
 import { useDispatch } from "react-redux"
-
 import {
   Drawer,  
   DrawerContent,    
@@ -23,15 +18,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { DateTimePicker } from "./partials/date-time-picker"
 
 const BoardFormSchema = z.object({
   id: z.string(),
@@ -66,13 +56,13 @@ export const BoardForm = ({
     reset,    
     formState: { errors, isSubmitting },
   } = useForm<BoardFormData>({ resolver: zodResolver(BoardFormSchema) })            
-  const [date, setDate] = useState<Date>()      
-  const dispatch = useDispatch()    
+  const [selectedDate, setSelectedDate] = useState<string | undefined>('')        
 
-  useEffect(() => {
-    if (!date) return         
-    setValue('deadline', date.toISOString())
-  }, [date])
+  const dispatch = useDispatch()        
+
+  useEffect(() => {    
+    setValue('deadline', selectedDate)          
+  }, [selectedDate])
 
   useEffect(() => {      
     if (initialData) {
@@ -81,9 +71,12 @@ export const BoardForm = ({
       setValue('description', initialData.description)
       setValue('priority', initialData.priority)
       setValue('deadline', initialData.deadline)
+
+      setSelectedDate(initialData.deadline)      
     } else {
       reset()
       setValue('id', uuidv4())
+      setSelectedDate(undefined)
     }
   }, [isOpen])
 
@@ -102,7 +95,7 @@ export const BoardForm = ({
     dispatch(editTask({ columnId: selectedColumn, updatedTask: data }))
     onOpenChange(false)        
     updateList()
-  }
+  }    
 
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>      
@@ -171,48 +164,10 @@ export const BoardForm = ({
 
             <div className="flex flex-col gap-3">
               <Label htmlFor="deadline">Prazo final</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-1/2 justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP", { timeZone: 'America/Sao_Paulo', locale: ptBR }) : <span>Selecione a data</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  align="start"
-                  className="flex w-auto flex-col space-y-2 p-2"
-                >                  
-                  <Select
-                    onValueChange={(value) =>
-                      setDate(addDays(new Date(), parseInt(value)))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione um período..." />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="0">Hoje</SelectItem>
-                      <SelectItem value="1">Amanhã</SelectItem>
-                      <SelectItem value="3">Em 3 dias</SelectItem>
-                      <SelectItem value="7">Em uma semana</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <div className="rounded-md border">
-                    <Calendar 
-                      mode="single" 
-                      selected={date} 
-                      onSelect={setDate} 
-                      locale={ptBR}                       
-                    />
-                  </div>
-                </PopoverContent>
-              </Popover>             
+              <DateTimePicker          
+                selectedDate={selectedDate}                                      
+                setSelectedDate={setSelectedDate}                
+              />             
             </div>
 
             <Button type="submit" form="board-form" disabled={isSubmitting}>
