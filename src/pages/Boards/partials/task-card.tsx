@@ -1,6 +1,6 @@
 import type { Task } from "@/types"
 import { Separator } from "@/components/ui/separator"
-import { Clock, Edit, Edit2, SquarePen, Trash } from "lucide-react"
+import { Clock, Edit2, Trash } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DraggableProvided } from "react-beautiful-dnd"
 import { calculateMinutesToDeadline } from "@/services/calculate-deadline"
