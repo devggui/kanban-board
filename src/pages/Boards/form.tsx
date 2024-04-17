@@ -8,6 +8,10 @@ import { ptBR } from "date-fns/locale/pt-BR"
 import { cn } from "@/lib/utils"
 import { CalendarIcon, Loader2 } from "lucide-react"
 import { v4 as uuidv4 } from "uuid"
+import { addDays } from "date-fns"
+import { addTask, editTask } from "@/reducers/boardReducer"
+import { useDispatch } from "react-redux"
+
 import {
   Drawer,  
   DrawerContent,    
@@ -28,9 +32,6 @@ import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { addDays } from "date-fns"
-import moment from "moment"
-import { toast } from "sonner"
 
 const BoardFormSchema = z.object({
   id: z.string(),
@@ -45,15 +46,17 @@ type BoardFormData = z.infer<typeof BoardFormSchema>
 type BoardFormProps = {  
   isOpen: boolean    
   initialData?: Task
-  onOpenChange: (value: boolean) => void  
-  onCreate: (taskData: Task) => void
+  selectedColumn: string 
+  onOpenChange: (value: boolean) => void    
+  updateList: () => void 
 }
 
 export const BoardForm = ({  
   isOpen,
   initialData,
-  onOpenChange, 
-  onCreate 
+  onOpenChange,  
+  selectedColumn,  
+  updateList
 }: BoardFormProps) => {
   const {
     register,
@@ -63,14 +66,15 @@ export const BoardForm = ({
     reset,    
     formState: { errors, isSubmitting },
   } = useForm<BoardFormData>({ resolver: zodResolver(BoardFormSchema) })            
-  const [date, setDate] = useState<Date>()    
+  const [date, setDate] = useState<Date>()      
+  const dispatch = useDispatch()    
 
   useEffect(() => {
     if (!date) return         
     setValue('deadline', date.toISOString())
   }, [date])
 
-  useEffect(() => {    
+  useEffect(() => {      
     if (initialData) {
       setValue('id', initialData.id)
       setValue('title', initialData.title)
@@ -84,8 +88,20 @@ export const BoardForm = ({
   }, [isOpen])
 
   const sendForm = (data: BoardFormData) => {  
-    onCreate(data)     
-    onOpenChange(false)
+    if (initialData) update(data)
+    else store(data)            
+  }
+
+  const store = (data: BoardFormData) => {    
+    dispatch(addTask({ columnId: selectedColumn, task: data }))             
+    onOpenChange(false)    
+    updateList()
+  }
+
+  const update = (data: BoardFormData) => {              
+    dispatch(editTask({ columnId: selectedColumn, updatedTask: data }))
+    onOpenChange(false)        
+    updateList()
   }
 
   return (
