@@ -4,7 +4,7 @@ import { Clock, Edit, Edit2, SquarePen, Trash } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DraggableProvided } from "react-beautiful-dnd"
 import { calculateMinutesToDeadline } from "@/services/calculate-deadline"
-import { Button } from "./ui/button"
+import { Button } from "../../../components/ui/button"
 
 type TaskCardProps = {
   task: Task

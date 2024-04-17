@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautif
 import type { Columns, Task } from "@/types"
 import { selectBoard } from "@/reducers/boardReducer"
 import { useOnDragEnd } from "@/hooks/on-drag-end"
-import { TaskCard } from "@/components/task-card"
+import { TaskCard } from "@/pages/Boards/partials/task-card"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 
