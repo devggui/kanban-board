@@ -52,13 +52,13 @@ npm run dev
 ## 🌐 Links úteis
 [NodeJS](https://nodejs.org/en/download)  
 [ReactJS](https://react.dev)  
-[Vite](https://vitejs.dev)
+[Vite](https://vitejs.dev)  
 [Tailwind CSS](https://tailwindcss.com)  
-[Lucide](https://lucide.dev)
-[Shadcn/ui](https://ui.shadcn.com)
-[Redux](https://redux.js.org)
-[React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)
-[React Router](https://reactrouter.com/en/main)
+[Lucide](https://lucide.dev)  
+[Shadcn/ui](https://ui.shadcn.com)  
+[Redux](https://redux.js.org)  
+[React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)  
+[React Router](https://reactrouter.com/en/main)  
 
 
 ## 🧑‍💻 Guilherme Henrique
