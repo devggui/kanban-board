@@ -40,45 +40,46 @@ const initialState: Columns = {
   }
 }
 
-const saveStateToLocalStorage = (state: Columns) => {
-  localStorage.setItem("boardState", JSON.stringify(state))
-}
+const loadInitialState = () => {
+  const data = window.localStorage.getItem("boardState")
 
-const loadStateFromLocalStorage = (): Columns | null => {
-  const serializedState = localStorage.getItem("boardState")
-  if (serializedState === null) {
-    return null
-  }
-  return JSON.parse(serializedState)
+  if (data === null) return initialState
+  else return JSON.parse(data)
 }
-
-const initialStateFromLocalStorage = loadStateFromLocalStorage() || initialState
 
 const boardSlice = createSlice({
   name: "board",
-  initialState: initialStateFromLocalStorage,
+  initialState: loadInitialState,
   reducers: {
     addTask: (state, action: PayloadAction<AddTaskPayload>) => {
       const { columnId, task } = action.payload      
       state[columnId].items.push(task)            
-      saveStateToLocalStorage(state)
+      
+      window.localStorage.setItem("boardState", JSON.stringify(state))
     }, 
     editTask: (state, action: PayloadAction<EditTaskPayload>) => {      
       const { columnId, updatedTask } = action.payload      
-      const taskIndex = state[columnId].items.findIndex(task => task.id === updatedTask.id)            
+      const taskIndex = state[columnId].items.findIndex((task: { id: string }) => task.id === updatedTask.id)            
       state[columnId].items[taskIndex] = updatedTask      
-      saveStateToLocalStorage(state)            
+
+      window.localStorage.setItem("boardState", JSON.stringify(state))
     },
     deleteTask: (state, action: PayloadAction<DeleteTaskPayload>) => {
       const { columnId, deletedTask } = action.payload
-      const taskIndex = state[columnId].items.findIndex(task => task.id === deletedTask?.id)            
+      const taskIndex = state[columnId].items.findIndex((task: { id: string | undefined }) => task.id === deletedTask?.id)            
       state[columnId].items.splice(taskIndex, 1)
-      saveStateToLocalStorage(state)
-    }   
+
+      window.localStorage.setItem("boardState", JSON.stringify(state))
+    },
+    updateColumns: (_, action) => {                  
+      const updatedState = action.payload
+      window.localStorage.setItem("boardState", JSON.stringify(updatedState))      
+      return updatedState
+    }    
   }
 })
 
-export const { addTask, editTask, deleteTask } = boardSlice.actions
+export const { addTask, editTask, deleteTask, updateColumns } = boardSlice.actions
 export const selectBoard = (state: RootState) => state.board
 
 export default boardSlice.reducer

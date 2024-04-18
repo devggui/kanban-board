@@ -1,8 +1,5 @@
-import { useState } from "react"
-import { useSelector } from "react-redux"
 import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautiful-dnd"
 import type { Columns, Task } from "@/types"
-import { selectBoard } from "@/reducers/boardReducer"
 import { useOnDragEnd } from "@/hooks/on-drag-end"
 import { TaskCard } from "@/pages/Boards/partials/task-card"
 import { Button } from "@/components/ui/button"
@@ -11,18 +8,18 @@ import { Plus } from "lucide-react"
 type DragDropProps = {
   onCreate: (columnId: string) => void
   onEdit: (columnId: string, task: Task) => void
-  onDelete: (columnId: string, task: Task) => void
+  onDelete: (columnId: string, task: Task) => void   
+  columns: Columns
+  setColumns: React.Dispatch<React.SetStateAction<Columns>>    
 }
 
 export function DragDrop({
   onCreate,
   onEdit,
-  onDelete
-}: DragDropProps) {
-  const boards = useSelector(selectBoard)   
-  
-  const [columns, setColumns] = useState<Columns>(boards)    
-
+  onDelete,  
+  columns,
+  setColumns  
+}: DragDropProps) {  
   return (
     <DragDropContext onDragEnd={(result: DropResult) => useOnDragEnd(result, columns, setColumns)}>
       <div className="flex items-start p-6 gap-6 flex-1 max-h-[calc(100vh-65px)] overflow-auto">        
@@ -32,7 +29,7 @@ export function DragDrop({
               droppableId={columnId}
               key={columnId}
             >
-              {provided => (
+              {(provided) => (
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}

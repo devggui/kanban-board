@@ -1,66 +1,80 @@
-import { useState } from "react"
-import type { Task } from "@/types"
+import { useEffect, useState } from "react"
+import type { Columns, Task } from "@/types"
 import { BoardForm } from "./form"
-import { deleteTask } from "@/reducers/boardReducer"
+import { deleteTask, selectBoard, updateColumns } from "@/reducers/boardReducer"
 import { DeleteDialog } from "@/components/delete-dialog"
 import { useDispatch } from "react-redux"
 import { DragDrop } from "./drag-drop"
+import { useSelector } from "react-redux"
 
-export function Boards() {    
+export function Boards() {   
+  const boards = useSelector(selectBoard)
+  const dispatch = useDispatch()    
+  
+  const [columns, setColumns] = useState<Columns>(boards)    
+  const [version, setVersion] = useState<number>(0)  
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false)
   const [selectedColumn, setSelectedColumn] = useState<string>('')        
-  const [selectedTask, setSelectedTask] = useState<Task>()
+  const [selectedTask, setSelectedTask] = useState<Task>()      
 
-  const dispatch = useDispatch()
+  useEffect(() => {
+    loadColumns()    
+  }, [version]) 
 
-  const handleDeleteDialogOpenChange = (value: boolean): void => {
-    setIsDeleteDialogOpen(value)
+  useEffect(() => {
+    dispatch(updateColumns(columns))    
+  }, [columns])
+
+  const loadColumns = () => {    
+    const data = window.localStorage.getItem("boardState")
+    if (data === null) return    
+    setColumns(JSON.parse(data))
   }
 
-  const handleFormOpenChange = (value: boolean): void => {
-    setIsFormOpen(value)
-  } 
+  const handleDeleteDialogOpenChange = (value: boolean): void => setIsDeleteDialogOpen(value)
+
+  const handleFormOpenChange = (value: boolean): void => setIsFormOpen(value)
 
   const handleCreateTask = (columnId: string) => { 
     setSelectedTask(undefined)
     setSelectedColumn(columnId)
-    setIsFormOpen(true)
+    setIsFormOpen(true)    
   }
 
   const handleEditTask = (columnId: string, task: Task) => {             
     setSelectedColumn(columnId)
     setSelectedTask(task)
-    setIsFormOpen(true)
+    setIsFormOpen(true)    
   }
   
   const handleDeleteTask = (columnId: string, task: Task) => {
     setSelectedColumn(columnId)
     setSelectedTask(task)
-    setIsDeleteDialogOpen(true)
+    setIsDeleteDialogOpen(true)    
   }
 
   const handleConfirmDeleteTask = () => {
-    dispatch(deleteTask({ columnId: selectedColumn, deletedTask: selectedTask }))
-    updateList()
-  }
+    dispatch(deleteTask({ columnId: selectedColumn, deletedTask: selectedTask }))      
+    setVersion(version + 1)
+  }   
 
-  const updateList = () => window.location.reload()
-  
   return (
     <>
-      <DragDrop 
+      <DragDrop                 
         onCreate={handleCreateTask}
         onEdit={handleEditTask}
-        onDelete={handleDeleteTask}
+        onDelete={handleDeleteTask}       
+        columns={columns}
+        setColumns={setColumns}              
       />
 
       <BoardForm 
         isOpen={isFormOpen}         
         onOpenChange={handleFormOpenChange}              
         initialData={selectedTask}
-        selectedColumn={selectedColumn}        
-        updateList={updateList}
+        selectedColumn={selectedColumn}            
+        onSuccess={() => setVersion(version + 1)}
       />
 
       <DeleteDialog 
@@ -68,7 +82,7 @@ export function Boards() {
         onOpenChange={handleDeleteDialogOpenChange}
         onSubmit={handleConfirmDeleteTask}
         title="Tem certeza que deseja excluir essa tarefa?"
-        description="Essa ação é irreversível."        
+        description="Essa ação é irreversível."         
       />
     </>
   )

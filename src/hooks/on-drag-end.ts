@@ -5,12 +5,12 @@ export const useOnDragEnd = (
   result: DropResult, 
   columns: Columns, 
   setColumns: React.Dispatch<React.SetStateAction<Columns>>
-) => {  
+) => {      
   if (!result.destination) return
 
   const { source, destination } = result
 
-  if (source.droppableId !== destination.droppableId) {
+  if (source.droppableId !== destination.droppableId) {    
     const sourceColumn = columns[source.droppableId]
     const destinationColumn = columns[destination.droppableId]
 
@@ -22,7 +22,8 @@ export const useOnDragEnd = (
     destinationItems.splice(destination.index, 0, removed)
 
     setColumns({
-      ...columns, [source.droppableId]: {
+      ...columns, 
+      [source.droppableId]: {
         ...sourceColumn,
         items: sourceItems
       },
@@ -30,8 +31,9 @@ export const useOnDragEnd = (
         ...destinationColumn,
         items: destinationItems
       }
-    })
-  } else {
+    })  
+    
+  } else {    
     const column = columns[source.droppableId]
     const copiedItems = [...column.items]
     const [removed] = copiedItems.splice(source.index, 1)
@@ -43,6 +45,7 @@ export const useOnDragEnd = (
         ...column,
         items: copiedItems
       }
-    })
-  }
+    })  
+  }     
 }
+

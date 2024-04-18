@@ -37,16 +37,16 @@ type BoardFormProps = {
   isOpen: boolean    
   initialData?: Task
   selectedColumn: string 
-  onOpenChange: (value: boolean) => void    
-  updateList: () => void 
+  onOpenChange: (value: boolean) => void   
+  onSuccess: () => void   
 }
 
 export const BoardForm = ({  
   isOpen,
   initialData,
   onOpenChange,  
-  selectedColumn,  
-  updateList
+  selectedColumn,   
+  onSuccess
 }: BoardFormProps) => {
   const {
     register,
@@ -82,19 +82,19 @@ export const BoardForm = ({
 
   const sendForm = (data: BoardFormData) => {  
     if (initialData) update(data)
-    else store(data)            
+    else store(data)       
   }
 
   const store = (data: BoardFormData) => {    
     dispatch(addTask({ columnId: selectedColumn, task: data }))             
-    onOpenChange(false)    
-    updateList()
+    onOpenChange(false)  
+    onSuccess()      
   }
 
   const update = (data: BoardFormData) => {              
     dispatch(editTask({ columnId: selectedColumn, updatedTask: data }))
-    onOpenChange(false)        
-    updateList()
+    onOpenChange(false) 
+    onSuccess()           
   }    
 
   return (
