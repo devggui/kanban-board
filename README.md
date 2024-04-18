@@ -46,7 +46,7 @@ npm install
 ```
 npm run dev
 ``` 
-5  Ou acesse o aplicativo através do website [React Kanban Board](https://react-kanban-board.vercel.app) 
+5  Ou acesse o aplicativo através do website [React Kanban Board](https://react-kanban-board-six.vercel.app) 
 
 
 ## 🌐 Links úteis
